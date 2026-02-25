@@ -2,7 +2,6 @@ package mate.academy.springbootintro.repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import mate.academy.springbootintro.model.Book;
 
 public interface BookRepository {
