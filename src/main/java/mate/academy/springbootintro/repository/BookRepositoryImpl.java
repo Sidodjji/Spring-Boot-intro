@@ -1,6 +1,7 @@
 package mate.academy.springbootintro.repository;
 
 import java.util.List;
+import java.util.Optional;
 import mate.academy.springbootintro.model.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -45,6 +46,16 @@ public class BookRepositoryImpl implements BookRepository {
                     "select b from Book b", Book.class).getResultList();
         } catch (Exception e) {
             throw new RuntimeException("Can't get all Books from DB", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "select b from Book b where b.id = :id", Book.class)
+                    .setParameter("id", id)
+                    .uniqueResultOptional();
         }
     }
 }
