@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomGlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<String>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
                 .getAllErrors().stream()
                 .map(objectError -> objectError.getDefaultMessage())
@@ -22,7 +23,8 @@ public class CustomGlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
-        return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("An unexpected error occurred",
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
