@@ -1,8 +1,8 @@
-package mate.academy.springbootintro.service;
+package mate.academy.springbootintro.service.book;
 
 import lombok.RequiredArgsConstructor;
-import mate.academy.springbootintro.dto.BookDto;
-import mate.academy.springbootintro.dto.CreateBookRequestDto;
+import mate.academy.springbootintro.dto.book.BookDto;
+import mate.academy.springbootintro.dto.book.CreateBookRequestDto;
 import mate.academy.springbootintro.exeption.EntityNotFoundException;
 import mate.academy.springbootintro.mapper.BookMapper;
 import mate.academy.springbootintro.model.Book;
