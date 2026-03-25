@@ -43,3 +43,10 @@ databaseChangeLog:
               - column:
                   name: shipping_address
                   type: VARCHAR(500)
+
+              - column:
+                  name: is_deleted
+                  type: TINYINT(1)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
