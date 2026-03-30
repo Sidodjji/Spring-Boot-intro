@@ -23,6 +23,9 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <maven.checkstyle.plugin.configLocation>checkstyle.xml</maven.checkstyle.plugin.configLocation>
         <springdoc.version>2.1.0</springdoc.version>
+        <jjwt-api.version>0.13.0</jjwt-api.version>
+        <jjwt-impl.version>0.13.0</jjwt-impl.version>
+        <jjwt-jackson.version>0.13.0</jjwt-jackson.version>
     </properties>
 
     <dependencies>
@@ -90,6 +93,23 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt-impl.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt-jackson.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
