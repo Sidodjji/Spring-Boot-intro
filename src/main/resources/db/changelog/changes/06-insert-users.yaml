@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-users
+      author: Andrii
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: admin@mail.com
+              - column:
+                  name: password
+                  value: $2a$10$OdlLq3gCI7McQiTv/lC/.e475BDJdSqFiQLL64JjRntatjJdFqRx6
+              - column:
+                  name: first_name
+                  value: Admin
+              - column:
+                  name: last_name
+                  value: User
+              - column:
+                  name: shipping_address
+                  value: Admin Address
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: user@mail.com
+              - column:
+                  name: password
+                  value: $2a$10$OdlLq3gCI7McQiTv/lC/.e475BDJdSqFiQLL64JjRntatjJdFqRx6
+              - column:
+                  name: first_name
+                  value: Regular
+              - column:
+                  name: last_name
+                  value: User
+              - column:
+                  name: shipping_address
+                  value: User Address
