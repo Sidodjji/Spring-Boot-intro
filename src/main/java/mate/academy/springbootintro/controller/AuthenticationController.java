@@ -1,5 +1,7 @@
 package mate.academy.springbootintro.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springbootintro.dto.user.UserLoginRequestDto;
@@ -17,20 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication management", description = "Endpoints for user authentication")
 public class AuthenticationController {
 
     private final UserService userService;
 
     private final AuthenticationService authenticationService;
 
+    @Operation(summary = "Register new user", description = "Create a new user account")
     @PostMapping("/registration")
     public UserResponseDto register(@Valid @RequestBody UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         return userService.register(requestDto);
     }
 
+    @Operation(summary = "Login user", description = "Authenticate user and return JWT token")
     @PostMapping("/login")
-    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto request) {
+    public UserLoginResponseDto login(@Valid @RequestBody UserLoginRequestDto request) {
         return authenticationService.authenticate(request);
     }
 }
