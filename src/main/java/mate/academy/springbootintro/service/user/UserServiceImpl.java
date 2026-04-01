@@ -10,6 +10,7 @@ import mate.academy.springbootintro.model.Role;
 import mate.academy.springbootintro.model.User;
 import mate.academy.springbootintro.repository.RoleRepository;
 import mate.academy.springbootintro.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,12 +23,15 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto) {
         if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new RegistrationException("Can't register user");
         }
         User user = userMapper.toModel(requestDto);
+        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         Role userRole = roleRepository.findByRole(Role.RoleName.USER).orElseThrow(
                 () -> new RuntimeException("Role USER not found"));
         user.setRoles(Set.of(userRole));
