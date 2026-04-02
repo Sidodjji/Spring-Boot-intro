@@ -13,5 +13,5 @@ public interface CategoryMapper {
 
     Category toEntity(CreateCategoryRequestDto categoryDto);
 
-    void updateBookFromDto(CategoryDto dto, @MappingTarget Category category);
+    void updateBookFromDto(CreateCategoryRequestDto dto, @MappingTarget Category category);
 }
