@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-books-category-table
+      id: create-books-categories-table
       author: Andrii
       changes:
         - createTable:
@@ -21,17 +21,18 @@ databaseChangeLog:
         - addPrimaryKey:
             tableName: books_categories
             columnNames: book_id, category_id
+            constraintName: pk_books_categories
 
         - addForeignKeyConstraint:
             baseTableName: books_categories
             baseColumnNames: book_id
             referencedTableName: books
             referencedColumnNames: id
-            constraintName: fk_books_category_category
+            constraintName: fk_books_categories_book
 
         - addForeignKeyConstraint:
             baseTableName: books_categories
             baseColumnNames: category_id
             referencedTableName: categories
             referencedColumnNames: id
-            constraintName: fk_books_category_books
+            constraintName: fk_books_categories_category

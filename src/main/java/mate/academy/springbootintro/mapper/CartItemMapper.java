@@ -8,9 +8,8 @@ import mate.academy.springbootintro.model.CartItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, uses = BookMapper.class)
 public interface CartItemMapper {
-
     CartItemDto toDto(CartItem cartItem);
 
     CartItem toModel(CreateCartItemRequestDto requestDto);

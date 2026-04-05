@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/categories")
 @Tag(name = "Categories management", description = "Endpoints for managing categories")
 public class CategoryController {
-
     private final CategoryService categoryService;
+
     private final BookService bookService;
 
     @Operation(summary = "Create a new category")

@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.Length;
 @FieldMatch(first = "password", second = "repeatPassword",
         message = "Passwords must match")
 public class UserRegistrationRequestDto {
-
     @NotBlank
     @Email
     private String email;

@@ -7,8 +7,8 @@ import mate.academy.springbootintro.annotation.FieldMatch;
 import org.springframework.beans.BeanWrapperImpl;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
-
     private String firstFieldName;
+
     private String secondFieldName;
 
     @Override

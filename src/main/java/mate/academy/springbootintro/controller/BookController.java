@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/books")
 @Tag(name = "Books management", description = "Endpoints for managing books")
 public class BookController {
-
     private final BookService bookService;
 
     @Operation(summary = "Get all books with pagination")

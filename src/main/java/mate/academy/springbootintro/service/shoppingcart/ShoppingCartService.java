@@ -1,13 +1,19 @@
 package mate.academy.springbootintro.service.shoppingcart;
 
-import mate.academy.springbootintro.dto.cartitem.CartItemDto;
 import mate.academy.springbootintro.dto.cartitem.CreateCartItemRequestDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import mate.academy.springbootintro.dto.cartitem.UpdateCartItemRequestDto;
+import mate.academy.springbootintro.dto.shoppingcart.ShoppingCartDto;
+import mate.academy.springbootintro.model.ShoppingCart;
+import mate.academy.springbootintro.model.User;
 
 public interface ShoppingCartService {
+    ShoppingCartDto findAll();
 
-    Page<CartItemDto> findAll(Pageable pageable);
+    ShoppingCartDto saveCartItem(CreateCartItemRequestDto requestDto);
 
-    CartItemDto saveCartItem(CreateCartItemRequestDto requestDto);
+    ShoppingCartDto update(Long id, UpdateCartItemRequestDto requestDto);
+
+    void deleteById(Long id);
+
+    ShoppingCart createNewCart(User user);
 }

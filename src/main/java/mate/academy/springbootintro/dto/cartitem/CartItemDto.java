@@ -1,11 +1,10 @@
 package mate.academy.springbootintro.dto.cartitem;
 
 import lombok.Data;
-import mate.academy.springbootintro.model.Book;
+import mate.academy.springbootintro.dto.book.BookDtoWithoutCategoryIds;
 
 @Data
 public class CartItemDto {
-    private Long id;
-    private Book book;
+    private BookDtoWithoutCategoryIds book;
     private int quantity;
 }
