@@ -10,13 +10,14 @@ import mate.academy.springbootintro.model.Role;
 import mate.academy.springbootintro.model.User;
 import mate.academy.springbootintro.repository.RoleRepository;
 import mate.academy.springbootintro.repository.UserRepository;
+import mate.academy.springbootintro.service.shoppingcart.ShoppingCartService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
@@ -25,7 +26,10 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final ShoppingCartService shoppingCartService;
+
     @Override
+    @Transactional
     public UserResponseDto register(UserRegistrationRequestDto requestDto) {
         if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new RegistrationException("Can't register user");
@@ -35,6 +39,8 @@ public class UserServiceImpl implements UserService {
         Role userRole = roleRepository.findByRole(Role.RoleName.USER).orElseThrow(
                 () -> new RuntimeException("Role USER not found"));
         user.setRoles(Set.of(userRole));
-        return userMapper.toDto(userRepository.save(user));
+        userRepository.save(user);
+        shoppingCartService.createNewCart(user);
+        return userMapper.toDto(user);
     }
 }

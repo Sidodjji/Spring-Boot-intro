@@ -1,30 +1,28 @@
 databaseChangeLog:
   - changeSet:
-      id: create-categories-table
+      id: create-shopping-carts-table
       author: Andrii
       changes:
         - createTable:
-            tableName: categories
+            tableName: shopping_carts
             columns:
               - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
-              - column:
-                  name: name
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: description
-                  type: VARCHAR(1000)
+
               - column:
                   name: is_deleted
                   type: BOOLEAN
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: shopping_carts
+            baseColumnNames: id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_cart_user

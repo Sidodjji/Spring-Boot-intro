@@ -21,6 +21,7 @@ databaseChangeLog:
         - addPrimaryKey:
             tableName: users_roles
             columnNames: user_id, role_id
+            constraintName: pk_users_roles
 
         - addForeignKeyConstraint:
             baseTableName: users_roles

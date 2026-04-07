@@ -16,7 +16,7 @@ databaseChangeLog:
 
               - column:
                   name: role
-                  type: VARCHAR(50)
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
                     unique: true
