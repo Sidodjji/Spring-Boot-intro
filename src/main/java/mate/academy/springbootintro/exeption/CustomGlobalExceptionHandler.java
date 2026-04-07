@@ -35,4 +35,11 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<String> handleRegistrationException(RegistrationException ex) {
         return new ResponseEntity<>("Registration Exception occurred", HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(EmptyShoppingCartException.class)
+    public ResponseEntity<String> handleEmptyShoppingCartException(
+            EmptyShoppingCartException ex
+    ) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
