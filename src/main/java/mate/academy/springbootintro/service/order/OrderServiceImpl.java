@@ -1,5 +1,6 @@
 package mate.academy.springbootintro.service.order;
 
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -9,8 +10,8 @@ import mate.academy.springbootintro.dto.order.CreateOrderRequestDto;
 import mate.academy.springbootintro.dto.order.OrderDto;
 import mate.academy.springbootintro.dto.order.UpdateOrderStatusRequestDto;
 import mate.academy.springbootintro.dto.orderitem.OrderItemDto;
-import mate.academy.springbootintro.exeption.EmptyShoppingCartException;
 import mate.academy.springbootintro.exeption.EntityNotFoundException;
+import mate.academy.springbootintro.exeption.OrderProcessingException;
 import mate.academy.springbootintro.mapper.OrderItemMapper;
 import mate.academy.springbootintro.mapper.OrderMapper;
 import mate.academy.springbootintro.model.Order;
@@ -27,23 +28,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final ShoppingCartRepository shoppingCartRepository;
-
     private final OrderItemMapper orderItemMapper;
-
     private final OrderMapper orderMapper;
-
     private final OrderRepository orderRepository;
-
     private final OrderItemRepository orderItemRepository;
 
     @Override
     public OrderDto save(CreateOrderRequestDto requestDto) {
         User user = getAuthenticatedUser();
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Can't find shopping cart"));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Can't find shopping cart for user id: " + user.getId()));
         validateShoppingCart(shoppingCart);
         return orderMapper.toDto(orderRepository
                 .save(createNewOrder(user, shoppingCart, requestDto)));
@@ -118,7 +117,8 @@ public class OrderServiceImpl implements OrderService {
 
     private void validateShoppingCart(ShoppingCart shoppingCart) {
         if (shoppingCart.getCartItems().isEmpty()) {
-            throw new EmptyShoppingCartException("Can't create order from empty shopping cart");
+            throw new OrderProcessingException("Can't create order from empty shopping cart."
+                    + " Cart id: " + shoppingCart.getId());
         }
     }
 }

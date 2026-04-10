@@ -32,12 +32,14 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @org.hibernate.annotations.JdbcTypeCode(java.sql.Types.VARCHAR)
     private Status status;
+    @Column(nullable = false)
     private BigDecimal total;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime orderDate;
+    @Column(nullable = false)
     private String shippingAddress;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

@@ -31,6 +31,8 @@ databaseChangeLog:
               - column:
                   name: price
                   type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
 
         - addForeignKeyConstraint:
             baseTableName: order_items

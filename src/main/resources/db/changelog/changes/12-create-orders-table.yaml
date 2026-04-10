@@ -20,18 +20,24 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status
-                  type: VARCHAR(255)
+                  type: ENUM('PENDING', 'DELIVERED', 'COMPLETED')
                   constraints:
                     nullable: false
               - column:
                   name: total
                   type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
               - column:
                   name: order_date
                   type: DATETIME
+                  constraints:
+                    nullable: false
               - column:
                   name: shipping_address
                   type: VARCHAR(255)
+                  constraints:
+                    nullable: false
 
         - addForeignKeyConstraint:
             baseTableName: orders
