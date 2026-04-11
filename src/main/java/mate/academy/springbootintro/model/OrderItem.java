@@ -1,5 +1,6 @@
 package mate.academy.springbootintro.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +29,8 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
+    @Column(nullable = false)
     private int quantity;
+    @Column(nullable = false)
     private BigDecimal price;
 }
