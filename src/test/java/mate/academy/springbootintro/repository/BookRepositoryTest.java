@@ -1,7 +1,6 @@
 package mate.academy.springbootintro.repository;
 
 import mate.academy.springbootintro.model.Book;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -32,6 +33,6 @@ class BookRepositoryTest {
     void findAllByCategoriesId_WithWrongCategoryId_ShouldReturnEmptyList() {
         List<Book> actual = bookRepository.findAllByCategoriesId(2L);
 
-        Assertions.assertTrue(actual.isEmpty());
+        assertTrue(actual.isEmpty());
     }
 }

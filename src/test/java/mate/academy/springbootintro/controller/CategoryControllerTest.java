@@ -4,12 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import mate.academy.springbootintro.dto.category.CategoryDto;
 import mate.academy.springbootintro.dto.category.CreateCategoryRequestDto;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
@@ -24,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -100,9 +96,12 @@ class CategoryControllerTest {
                 CategoryDto.class
         );
 
-        Assertions.assertNotNull(actual.getId());
-        Assertions.assertEquals(requestDto.getName(), actual.getName());
-        Assertions.assertEquals(requestDto.getDescription(), actual.getDescription());
+        CategoryDto expected = new CategoryDto()
+                .setId(actual.getId())
+                .setName(requestDto.getName())
+                .setDescription(requestDto.getDescription());
+
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -159,6 +158,11 @@ class CategoryControllerTest {
                 .setName("Fantastic")
                 .setDescription("New Fantastic category");
 
+        CategoryDto expected = new CategoryDto()
+                .setId(requestId)
+                .setName(requestDto.getName())
+                .setDescription(requestDto.getDescription());
+
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
 
         MvcResult mvcResult = mockMvc.perform(post("/categories/{id}", requestId)
@@ -172,8 +176,7 @@ class CategoryControllerTest {
                 CategoryDto.class
         );
 
-        Assertions.assertEquals("Fantastic", actual.getName());
-        Assertions.assertEquals("New Fantastic category", actual.getDescription());
+        assertEquals(expected, actual);
     }
 
     @Test

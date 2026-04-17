@@ -21,6 +21,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
 
@@ -43,7 +46,7 @@ class CategoryServiceTest {
 
         Page<CategoryDto> actual = categoryService.findAll(pageable);
 
-        Assertions.assertTrue(actual.isEmpty());
+        assertTrue(actual.isEmpty());
 
         Mockito.verify(categoryRepository).findAll(pageable);
         Mockito.verifyNoInteractions(categoryMapper);
@@ -54,21 +57,21 @@ class CategoryServiceTest {
     void findAll_WithManyCategories_ShouldReturnPageWithCategoriesDto() {
         Pageable pageable = PageRequest.of(0, 2);
 
-        Category category1 = new Category();
-        Category category2 = new Category();
+        Category firstCategory = new Category();
+        Category secondCategory = new Category();
 
-        Page<Category> page = new PageImpl<>(List.of(category1, category2), pageable, 2);
+        Page<Category> page = new PageImpl<>(List.of(firstCategory, secondCategory), pageable, 2);
 
-        CategoryDto dto1 = new CategoryDto();
-        CategoryDto dto2 = new CategoryDto();
+        CategoryDto firstDto = new CategoryDto();
+        CategoryDto secondDto = new CategoryDto();
 
         Mockito.when(categoryRepository.findAll(pageable)).thenReturn(page);
-        Mockito.when(categoryMapper.toDto(category1)).thenReturn(dto1);
-        Mockito.when(categoryMapper.toDto(category2)).thenReturn(dto2);
+        Mockito.when(categoryMapper.toDto(firstCategory)).thenReturn(firstDto);
+        Mockito.when(categoryMapper.toDto(secondCategory)).thenReturn(secondDto);
 
         Page<CategoryDto> actual = categoryService.findAll(pageable);
 
-        Assertions.assertEquals(2, actual.getContent().size());
+        assertEquals(2, actual.getContent().size());
 
         Mockito.verify(categoryRepository).findAll(pageable);
         Mockito.verify(categoryMapper, Mockito.times(2)).toDto(Mockito.any());
@@ -87,7 +90,7 @@ class CategoryServiceTest {
 
         CategoryDto actual = categoryService.getById(requestId);
 
-        Assertions.assertEquals(categoryDto, actual);
+        assertEquals(categoryDto, actual);
     }
 
     @Test
@@ -102,7 +105,7 @@ class CategoryServiceTest {
                 () -> categoryService.getById(requestId)
         );
 
-        Assertions.assertTrue(exception.getMessage().contains("3"));
+        assertTrue(exception.getMessage().contains("3"));
 
         Mockito.verify(categoryRepository).findById(requestId);
         Mockito.verifyNoInteractions(categoryMapper);
@@ -124,7 +127,7 @@ class CategoryServiceTest {
         CategoryDto actual = categoryService.save(requestDto);
 
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(15L, actual.getId());
+        assertEquals(15L, actual.getId());
 
         Mockito.verify(categoryRepository).save(category);
         Mockito.verify(categoryMapper).toEntity(requestDto);
@@ -165,7 +168,7 @@ class CategoryServiceTest {
 
         CategoryDto actual = categoryService.update(requestId, requestDto);
 
-        Assertions.assertEquals(categoryDto, actual);
+        assertEquals(categoryDto, actual);
 
         Mockito.verify(categoryRepository).findById(requestId);
         Mockito.verify(categoryRepository).save(category);
@@ -188,7 +191,7 @@ class CategoryServiceTest {
                 () -> categoryService.update(requestId, requestDto)
         );
 
-        Assertions.assertTrue(exception.getMessage().contains("1"));
+        assertTrue(exception.getMessage().contains("1"));
 
         Mockito.verify(categoryRepository).findById(requestId);
         Mockito.verifyNoInteractions(categoryMapper);

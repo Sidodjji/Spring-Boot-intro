@@ -10,7 +10,6 @@ import mate.academy.springbootintro.dto.book.BookDto;
 import mate.academy.springbootintro.dto.book.CreateBookRequestDto;
 import mate.academy.springbootintro.model.Category;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -153,14 +153,17 @@ class BookControllerTest {
                 BookDto.class
         );
 
-        Assertions.assertNotNull(actual.getId());
-        Assertions.assertEquals(requestDto.getTitle(), actual.getTitle());
-        Assertions.assertEquals(requestDto.getAuthor(), actual.getAuthor());
-        Assertions.assertEquals(requestDto.getIsbn(), actual.getIsbn());
-        Assertions.assertEquals(requestDto.getPrice(), actual.getPrice());
-        Assertions.assertEquals(requestDto.getDescription(), actual.getDescription());
-        Assertions.assertEquals(requestDto.getCoverImage(), actual.getCoverImage());
-        Assertions.assertEquals(1L, actual.getCategory().iterator().next().getId());
+        BookDto expected = new BookDto()
+                .setTitle(requestDto.getTitle())
+                .setDescription(requestDto.getDescription())
+                .setPrice(requestDto.getPrice())
+                .setIsbn(requestDto.getIsbn())
+                .setAuthor(requestDto.getAuthor())
+                .setCoverImage(requestDto.getCoverImage())
+                .setCategory(actual.getCategory())
+                .setId(actual.getId());
+
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -212,16 +215,17 @@ class BookControllerTest {
                 BookDto.class
         );
 
-        Assertions.assertNotNull(actual.getId());
-        Assertions.assertEquals(requestId, actual.getId());
-        Assertions.assertEquals(requestDto.getTitle(), actual.getTitle());
-        Assertions.assertEquals(requestDto.getAuthor(), actual.getAuthor());
-        Assertions.assertEquals(requestDto.getIsbn(), actual.getIsbn());
-        Assertions.assertEquals(requestDto.getPrice(), actual.getPrice());
-        Assertions.assertEquals(requestDto.getDescription(), actual.getDescription());
-        Assertions.assertEquals(requestDto.getCoverImage(), actual.getCoverImage());
-        Assertions.assertEquals(1, actual.getCategory().size());
-        Assertions.assertEquals(1L, actual.getCategory().iterator().next().getId());
+        BookDto expected = new BookDto()
+                .setTitle(requestDto.getTitle())
+                .setDescription(requestDto.getDescription())
+                .setPrice(requestDto.getPrice())
+                .setIsbn(requestDto.getIsbn())
+                .setAuthor(requestDto.getAuthor())
+                .setCoverImage(requestDto.getCoverImage())
+                .setCategory(actual.getCategory())
+                .setId(actual.getId());
+
+        assertEquals(expected, actual);
     }
 
     @Test

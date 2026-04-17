@@ -18,10 +18,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
@@ -53,8 +54,7 @@ class BookServiceTest {
 
         BookDto actual = bookService.findById(bookId);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(bookDto, actual);
+        assertEquals(bookDto, actual);
 
         Mockito.verify(bookRepository).findById(bookId);
         Mockito.verify(bookMapper).toDto(book);
@@ -68,12 +68,12 @@ class BookServiceTest {
         Mockito.when(bookRepository.findById(bookId))
                 .thenReturn(Optional.empty());
 
-        EntityNotFoundException exception = Assertions.assertThrows(
+        EntityNotFoundException exception = assertThrows(
                 EntityNotFoundException.class,
                 () -> bookService.findById(bookId)
         );
 
-        Assertions.assertTrue(exception.getMessage().contains("3"));
+        assertTrue(exception.getMessage().contains("3"));
 
         Mockito.verify(bookRepository).findById(bookId);
         Mockito.verifyNoInteractions(bookMapper);
@@ -89,7 +89,7 @@ class BookServiceTest {
 
         Page<BookDto> actual = bookService.findAll(pageable);
 
-        Assertions.assertTrue(actual.isEmpty());
+        assertTrue(actual.isEmpty());
 
         Mockito.verify(bookRepository).findAll(pageable);
         Mockito.verifyNoInteractions(bookMapper);
@@ -100,21 +100,21 @@ class BookServiceTest {
     void findAll_WithManyBooks_ShouldReturnPageWithBookDto() {
         Pageable pageable = PageRequest.of(0, 2);
 
-        Book book1 = new Book();
-        Book book2 = new Book();
+        Book fistBook = new Book();
+        Book secondBook = new Book();
 
-        Page<Book> page = new PageImpl<>(List.of(book1, book2), pageable, 2);
+        Page<Book> page = new PageImpl<>(List.of(fistBook, secondBook), pageable, 2);
 
-        BookDto dto1 = new BookDto();
-        BookDto dto2 = new BookDto();
+        BookDto firstDto = new BookDto();
+        BookDto secondDto = new BookDto();
 
         Mockito.when(bookRepository.findAll(pageable)).thenReturn(page);
-        Mockito.when(bookMapper.toDto(book1)).thenReturn(dto1);
-        Mockito.when(bookMapper.toDto(book2)).thenReturn(dto2);
+        Mockito.when(bookMapper.toDto(fistBook)).thenReturn(firstDto);
+        Mockito.when(bookMapper.toDto(secondBook)).thenReturn(secondDto);
 
         Page<BookDto> actual = bookService.findAll(pageable);
 
-        Assertions.assertEquals(2, actual.getContent().size());
+        assertEquals(2, actual.getContent().size());
 
         Mockito.verify(bookRepository).findAll(pageable);
         Mockito.verify(bookMapper, Mockito.times(2)).toDto(Mockito.any());
@@ -127,23 +127,23 @@ class BookServiceTest {
         requestDto.setCategoryIds(Set.of(1L, 2L));
 
         Book book = new Book();
-        Category category1 = new Category().setId(1L);
-        Category category2 = new Category().setId(2L);
+        Category firstCategory = new Category().setId(1L);
+        Category secondCategory = new Category().setId(2L);
 
         Book savedBook = new Book().setId(10L);
         BookDto expectedDto = new BookDto().setId(10L);
 
         Mockito.when(bookMapper.toModel(requestDto)).thenReturn(book);
         Mockito.when(categoryRepository.findAllById(requestDto.getCategoryIds()))
-                .thenReturn(List.of(category1, category2));
+                .thenReturn(List.of(firstCategory, secondCategory));
         Mockito.when(bookRepository.save(book)).thenReturn(savedBook);
         Mockito.when(bookMapper.toDto(savedBook)).thenReturn(expectedDto);
 
         BookDto result = bookService.save(requestDto);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(10L, result.getId());
-        Assertions.assertEquals(2, book.getCategories().size());
+        assertEquals(10L, result.getId());
+        assertEquals(2, book.getCategories().size());
 
         Mockito.verify(bookRepository).save(book);
         Mockito.verify(categoryRepository).findAllById(requestDto.getCategoryIds());
@@ -185,7 +185,7 @@ class BookServiceTest {
 
         BookDto actual = bookService.update(requestId, requestDto);
 
-        Assertions.assertEquals(bookDto, actual);
+        assertEquals(bookDto, actual);
 
         Mockito.verify(bookRepository).findById(requestId);
         Mockito.verify(bookRepository).save(book);
@@ -203,12 +203,12 @@ class BookServiceTest {
         Mockito.when(bookRepository.findById(requestId))
                 .thenReturn(Optional.empty());
 
-        EntityNotFoundException exception = Assertions.assertThrows(
+        EntityNotFoundException exception = assertThrows(
                 EntityNotFoundException.class,
                 () -> bookService.update(requestId, requestDto)
         );
 
-        Assertions.assertTrue(exception.getMessage().contains("1"));
+        assertTrue(exception.getMessage().contains("1"));
 
         Mockito.verify(bookRepository).findById(requestId);
     }
@@ -218,13 +218,13 @@ class BookServiceTest {
     void findAllByCategoryId_WithBooks_ShouldReturnListOfBookDtoWithoutCategoryIds() {
         Long requestId = 1L;
 
-        Book book1 = new Book();
-        Book book2 = new Book();
-        List<Book> bookList = List.of(book1, book2);
+        Book firstBook = new Book();
+        Book secondBook = new Book();
+        List<Book> bookList = List.of(firstBook, secondBook);
 
-        BookDtoWithoutCategoryIds dto1 = new BookDtoWithoutCategoryIds();
-        BookDtoWithoutCategoryIds dto2 = new BookDtoWithoutCategoryIds();
-        List<BookDtoWithoutCategoryIds> dtoList = List.of(dto1, dto2);
+        BookDtoWithoutCategoryIds firstDto = new BookDtoWithoutCategoryIds();
+        BookDtoWithoutCategoryIds secondDto = new BookDtoWithoutCategoryIds();
+        List<BookDtoWithoutCategoryIds> dtoList = List.of(firstDto, secondDto);
 
         Mockito.when(bookRepository.findAllByCategoriesId(requestId)).thenReturn(bookList);
         Mockito.when(bookMapper.toDtoWithoutCategories(bookList)).thenReturn(dtoList);
@@ -232,7 +232,7 @@ class BookServiceTest {
         List<BookDtoWithoutCategoryIds> result =
                 bookService.findAllByCategoryId(requestId);
 
-        Assertions.assertEquals(dtoList, result);
+        assertEquals(dtoList, result);
 
         Mockito.verify(bookRepository).findAllByCategoriesId(requestId);
         Mockito.verify(bookMapper).toDtoWithoutCategories(bookList);
@@ -251,7 +251,7 @@ class BookServiceTest {
         List<BookDtoWithoutCategoryIds> result =
                 bookService.findAllByCategoryId(requestId);
 
-        Assertions.assertTrue(result.isEmpty());
+        assertTrue(result.isEmpty());
 
         Mockito.verify(bookRepository).findAllByCategoriesId(requestId);
         Mockito.verify(bookMapper).toDtoWithoutCategories(List.of());
