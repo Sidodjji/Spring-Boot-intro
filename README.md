@@ -105,16 +105,13 @@ flowchart LR
 
 ## Database model
 
-The project includes Liquibase migrations for:
+The domain becomes much clearer with a visual schema:
 
-- books
-- categories
-- many-to-many relation between books and categories
-- users
-- roles
-- users and roles relation
-- shopping carts and cart items
-- orders and order items
+<p align="center">
+  <img src="docs/images/ER.svg" alt="Entity relationship diagram for the bookstore API" width="1000">
+</p>
+
+Liquibase changelogs create and version these tables and relationships, which keeps the schema reproducible across local development, tests, and Docker-based runs.
 
 Liquibase also seeds base roles so authorization is ready right after the first startup.
 
@@ -126,7 +123,14 @@ Liquibase also seeds base roles so authorization is ready right after the first 
 - Docker Desktop
 - Maven wrapper included in the project
 
-### 1. Create the environment file
+### 1. Clone the project
+
+```gitBash
+git clone https://github.com/Sidodjji/Spring-Boot-intro.git
+cd Spring-Boot-intro
+```
+
+### 2. Create the environment file
 
 Copy `.env.template` to `.env` and fill in the values. A working example:
 
@@ -148,7 +152,7 @@ JWT_EXPIRATION=300000
 
 `JWT_SECRET` must be long enough for HMAC signing. A 32+ character secret is the safest choice here.
 
-### 2. Run locally with Spring Boot
+### 3. Run locally with Spring Boot
 
 This is the fastest option for development. Because the project includes `spring-boot-docker-compose`, Spring Boot can work with the `docker-compose.yml` file and connect to PostgreSQL while the app itself runs on your machine.
 
@@ -175,7 +179,7 @@ SPRING_DATASOURCE_PASSWORD=postgres
 SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
 ```
 
-### 3. Authenticate requests
+### 4. Authenticate requests
 
 1. Register a new account with `POST /auth/registration`.
 2. Log in through `POST /auth/login`.
